@@ -1,0 +1,27 @@
+[root@localhost ~]$ cd /home/uminho/dockers/data/oracle/u02/app/oracle/oradata/ORCL
+[root@localhost ~]$ mkdir DBMONITOR
+[root@localhost ~]$ chown oracle:oinstall DBMONITOR
+[root@localhost ~]$ sudo docker ps -a
+[root@localhost ~]$ sudo docker exec -it <_> bash
+[oracle@1aeb761d5003 /]$ sqlplus sys/Oradoc_db1@localhost:1521/ORCLCDB.localdomain as sysdba
+	
+SQL> create pluggable database dbmonitor
+        	admin user dbmonitor_admin identified by dbmonitor
+	roles = (DBA) 
+	FILE_NAME_CONVERT=('/u02/app/oracle/oradata/ORCL/pdbseed','/u02/app/oracle/oradata/ORCL/DBMONITOR');
+
+SQL> alter pluggable database DBMONITOR open;
+
+SQL> create or replace trigger Sys.After_Startup after startup on database
+	begin
+		execute immediate 'alter pluggable database all open';
+	end After_Startup;
+
+SQL> connect sys/Oradoc_db1@localhost:1521/dbmonitor.localdomain as sysdba
+SQL> create tablespace dbmonitordata datafile '/u02/app/oracle/oradata/ORCL/dbmonitordata01.dbf' SIZE 500M;
+SQL> create temporary tablespace temp_dbmonitor tempfile '/u02/app/oracle/oradata/ORCL/pdb1/tempdbmonitor01.dbf' SIZE 500M;
+SQL> connect sys/Oradoc_db1@localhost:1521/dbmonitor.localdomain as sysdba; 
+SQL> create user monitor identified by database;
+SQL> grant all privileges to monitor;
+
+SQL DEVELOPER -> Criar nova conexão com utilizador: monitor ; password : database e service_name : dbmonitor.localdomain
