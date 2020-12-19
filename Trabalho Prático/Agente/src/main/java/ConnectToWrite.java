@@ -23,6 +23,10 @@ public class ConnectToWrite {
         return this.connection;
     }
 
+    public String getUser() {
+        return user;
+    }
+
     public void setConnection() throws SQLException {
         this.connection = DriverManager.getConnection(this.url, this.user, this.password);
     }
