@@ -21,25 +21,34 @@ public class Main {
                 try (Statement stmt = connectToRead.getConnection().createStatement()) {
                     try (Statement stmtwriter = connectToWrite.getConnection().createStatement()) {
                         String query;
+                        boolean first_time = true;
+                        int id = 1;
 
-                        while(true) {
+                        while (true) {
                             System.out.println("Going to sleep for 30 seconds ...");
                             Thread.sleep(30000);
                             System.out.println("Woke up ...");
 
                             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-                            /* INFO */
-                            query = "INSERT INTO DB_MONITOR VALUES ( NULL, '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
-                            stmtwriter.executeQuery(query);
-
-                            int id = 1;
-                            ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
-                            while (resultSet.next()) {
-                                id = resultSet.getInt("ID");
+                            if (first_time) {
+                                query = "INSERT INTO DB_MONITOR VALUES ( NULL, '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
+                                stmtwriter.executeQuery(query);
+                                ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
+                                while (resultSet.next()) {
+                                    /* INFO */
+                                    id = resultSet.getInt("ID");
+                                }
+                                first_time = false;
+                            } else {
+                                ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
+                                while (resultSet.next()) {
+                                    /* INFO */
+                                    id = resultSet.getInt("ID");
+                                }
                             }
 
-                            resultSet = stmtwriter.executeQuery("SELECT * FROM ROLES");
+                            ResultSet resultSet = stmtwriter.executeQuery("SELECT * FROM ROLES");
                             if (!resultSet.next()) {
                                 /* ROLES */
                                 query = "SELECT DISTINCT ROLE_ID , ROLE , AUTHENTICATION_TYPE FROM DBA_ROLES";
@@ -53,6 +62,7 @@ public class Main {
                                     stmtwriter.executeQuery(query);
                                 }
                             }
+
                             /* TABLESPACES */
                             query = "SELECT DISTINCT T.TABLESPACE_NAME, ROUND((M.TABLESPACE_SIZE*8/1024),2) AS TABLESPACE_SIZE, ROUND((M.TABLESPACE_SIZE-M.USED_SPACE)*8/1024,2) AS FREE, ROUND(M.USED_SPACE*8/1024,2) AS USED, ROUND(100-M.USED_PERCENT,2) AS PERC_FREE, ROUND(M.USED_PERCENT,2) AS PERC_USED, T.STATUS, T.ALLOCATION_TYPE, T.CONTENTS, T.SEGMENT_SPACE_MANAGEMENT \n" +
                                     "    FROM DBA_TABLESPACES T LEFT JOIN DBA_TABLESPACE_USAGE_METRICS M ON T.TABLESPACE_NAME = M.TABLESPACE_NAME ORDER BY TABLESPACE_NAME ";
