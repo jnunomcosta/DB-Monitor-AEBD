@@ -22,13 +22,9 @@ public class Main {
                     try (Statement stmtwriter = connectToWrite.getConnection().createStatement()) {
                         String query;
                         boolean first_time = true;
-                        int id = 1;
+                        int id = 0;
 
                         while (true) {
-                            System.out.println("Going to sleep for 30 seconds ...");
-                            Thread.sleep(30000);
-                            System.out.println("Woke up ...");
-
                             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
                             /* INFO */
@@ -37,14 +33,14 @@ public class Main {
                                 while (resultSet.next()) {
                                     id = resultSet.getInt("MAX(ID)");
                                 }
-                                query = "INSERT INTO DB_MONITOR VALUES ( "+ (id+1) +", '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
+                                id = id + 1;
+                                query = "INSERT INTO DB_MONITOR VALUES ( " + id + ", '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
                                 stmtwriter.executeQuery(query);
                                 first_time = false;
                             } else {
-                                ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
+                                ResultSet resultSet = stmtwriter.executeQuery("SELECT MAX(ID) FROM DB_MONITOR");
                                 while (resultSet.next()) {
-                                    /* INFO */
-                                    id = resultSet.getInt("ID");
+                                    id = resultSet.getInt("MAX(ID)");
                                 }
                             }
 
@@ -186,6 +182,10 @@ public class Main {
                                 query = "INSERT INTO CPU VALUES ('" + username + "'," + usage + ",TO_TIMESTAMP('" + timestamp + "','YYYY-MM-DD HH24:MI:SS.FF')," + id + ")";
                                 stmtwriter.executeQuery(query);
                             }
+
+                            System.out.println("Going to sleep for 30 seconds ...");
+                            Thread.sleep(30000);
+                            System.out.println("Woke up ...");
                         }
                     } catch (SQLException | InterruptedException e) {
                         e.printStackTrace();
