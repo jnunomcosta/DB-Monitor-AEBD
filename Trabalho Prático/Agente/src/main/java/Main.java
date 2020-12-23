@@ -31,14 +31,14 @@ public class Main {
 
                             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+                            /* INFO */
                             if (first_time) {
-                                query = "INSERT INTO DB_MONITOR VALUES ( NULL, '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
-                                stmtwriter.executeQuery(query);
-                                ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
+                                ResultSet resultSet = stmtwriter.executeQuery("SELECT MAX(ID) FROM DB_MONITOR");
                                 while (resultSet.next()) {
-                                    /* INFO */
-                                    id = resultSet.getInt("ID");
+                                    id = resultSet.getInt("MAX(ID)");
                                 }
+                                query = "INSERT INTO DB_MONITOR VALUES ( "+ (id+1) +", '" + connectToWrite.getUrl() + "','" + connectToWrite.getUser() + "')";
+                                stmtwriter.executeQuery(query);
                                 first_time = false;
                             } else {
                                 ResultSet resultSet = stmtwriter.executeQuery("SELECT ID FROM DB_MONITOR");
