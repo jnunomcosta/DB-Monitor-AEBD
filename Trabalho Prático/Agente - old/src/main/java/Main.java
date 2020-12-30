@@ -2,7 +2,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main {
@@ -26,9 +25,7 @@ public class Main {
                         int id = 0;
 
                         while (true) {
-                            Date date = new Date();
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                            String timestamp = formatter.format(date);
+                            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
                             /* INFO */
                             if (first_time) {
@@ -78,7 +75,7 @@ public class Main {
                                 String contents = resultSetTablespaces.getString("CONTENTS");
                                 String segment_space_management = resultSetTablespaces.getString("SEGMENT_SPACE_MANAGEMENT");
 
-                                query = "INSERT INTO TABLESPACES VALUES ('" + tablespace_name + "'," + size + "," + free + "," + used + "," + perc_free + "," + perc_used + ",'" + status + "','" + allocation_type + "','" + contents + "','" + segment_space_management + "',TO_DATE('" + timestamp + "','dd-mm-yyyy hh24:mi:ss')," + id + ")";
+                                query = "INSERT INTO TABLESPACES VALUES ('" + tablespace_name + "'," + size + "," + free + "," + used + "," + perc_free + "," + perc_used + ",'" + status + "','" + allocation_type + "','" + contents + "','" + segment_space_management + "',TO_TIMESTAMP('" + timestamp.toString() + "','YYYY-MM-DD HH24:MI:SS.FF')," + id + ")";
                                 stmtwriter.executeQuery(query);
 
                             }
@@ -99,7 +96,7 @@ public class Main {
                                 int maxblocks = resultSetDatafiles.getInt("MAXBLOCKS");
                                 String online_status = resultSetDatafiles.getString("ONLINE_STATUS");
 
-                                query = "INSERT INTO DATAFILES VALUES ('" + file_name + "'," + file_id + ",'" + tablespace_name + "'," + bytes + "," + blocks + ",'" + status + "','" + autoextensible + "'," + maxbytes + "," + maxblocks + ",'" + online_status + "',TO_DATE('" + timestamp.toString() + "','dd-mm-yyyy hh24:mi:ss'))";
+                                query = "INSERT INTO DATAFILES VALUES ('" + file_name + "'," + file_id + ",'" + tablespace_name + "'," + bytes + "," + blocks + ",'" + status + "','" + autoextensible + "'," + maxbytes + "," + maxblocks + ",'" + online_status + "',TO_TIMESTAMP('" + timestamp.toString() + "','YYYY-MM-DD HH24:MI:SS.FF'))";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -116,7 +113,7 @@ public class Main {
                                 Date created = resultSetUsers.getDate("CREATED");
                                 String common = resultSetUsers.getString("COMMON");
 
-                                query = "INSERT INTO USERS VALUES ('" + username + "','" + account_status + "','" + expiry_date + "','" + default_tablespace + "','" + temporary_tablespace + "','" + profile + "','" + created + "','" + common + "',TO_DATE('" + timestamp.toString() + "','dd-mm-yyyy hh24:mi:ss'))";
+                                query = "INSERT INTO USERS VALUES ('" + username + "','" + account_status + "','" + expiry_date + "','" + default_tablespace + "','" + temporary_tablespace + "','" + profile + "','" + created + "','" + common + "',TO_TIMESTAMP('" + timestamp.toString() + "','YYYY-MM-DD HH24:MI:SS.FF'))";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -136,7 +133,7 @@ public class Main {
                                 int wait_time_micro = resultSetSessions.getInt("WAIT_TIME_MICRO");
                                 Date logon_time = resultSetSessions.getDate("LOGON_TIME");
 
-                                query = "INSERT INTO SESSIONS VALUES (" + sid + ",'" + username + "','" + status + "','" + server + "','" + schemaname + "','" + osuser + "','" + machine + "'," + port + ",'" + type + "'," + wait_time_micro + ",'" + logon_time + "',TO_DATE('" + timestamp.toString() + "','dd-mm-yyyy hh24:mi:ss'))";
+                                query = "INSERT INTO SESSIONS VALUES (" + sid + ",'" + username + "','" + status + "','" + server + "','" + schemaname + "','" + osuser + "','" + machine + "'," + port + ",'" + type + "'," + wait_time_micro + ",'" + logon_time + "',TO_TIMESTAMP('" + timestamp.toString() + "','YYYY-MM-DD HH24:MI:SS.FF'))";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -147,7 +144,7 @@ public class Main {
                                 String granted_role = resultSetUsersRoles.getString("GRANTED_ROLE");
                                 String grantee = resultSetUsersRoles.getString("GRANTEE");
 
-                                query = "INSERT INTO USERS_ROLES VALUES ('" + granted_role + "','" + grantee + "',TO_DATE('" + timestamp.toString() + "','dd-mm-yyyy hh24:mi:ss'))";
+                                query = "INSERT INTO USERS_ROLES VALUES ('" + granted_role + "','" + grantee + "',TO_TIMESTAMP('" + timestamp.toString() + "','YYYY-MM-DD HH24:MI:SS.FF'))";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -158,7 +155,7 @@ public class Main {
                                 String name = resultSetPGA.getString("NAME");
                                 int value = resultSetPGA.getInt("VALUE");
 
-                                query = "INSERT INTO PROGRAM_GLOBAL_AREA VALUES ('" + name + "'," + value + ",TO_DATE('" + timestamp + "','dd-mm-yyyy hh24:mi:ss')," + id + ")";
+                                query = "INSERT INTO PROGRAM_GLOBAL_AREA VALUES ('" + name + "'," + value + ",TO_TIMESTAMP('" + timestamp + "','YYYY-MM-DD HH24:MI:SS.FF')," + id + ")";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -169,7 +166,7 @@ public class Main {
                                 String name = resultSetSGA.getString("NAME");
                                 int value = resultSetSGA.getInt("VALUE");
 
-                                query = "INSERT INTO SYSTEM_GLOBAL_AREA VALUES ('" + name + "'," + value + ",TO_DATE('" + timestamp + "','dd-mm-yyyy hh24:mi:ss')," + id + ")";
+                                query = "INSERT INTO SYSTEM_GLOBAL_AREA VALUES ('" + name + "'," + value + ",TO_TIMESTAMP('" + timestamp + "','YYYY-MM-DD HH24:MI:SS.FF')," + id + ")";
                                 stmtwriter.executeQuery(query);
                             }
 
@@ -182,7 +179,7 @@ public class Main {
                             while (resultSetCPU.next()) {
                                 String username = resultSetCPU.getString("USERNAME");
                                 double usage = resultSetCPU.getDouble("CPU USAGE (SECONDS)");
-                                query = "INSERT INTO CPU VALUES ('" + username + "'," + usage + ",TO_DATE('" + timestamp + "','dd-mm-yyyy hh24:mi:ss')," + id + ")";
+                                query = "INSERT INTO CPU VALUES ('" + username + "'," + usage + ",TO_TIMESTAMP('" + timestamp + "','YYYY-MM-DD HH24:MI:SS.FF')," + id + ")";
                                 stmtwriter.executeQuery(query);
                             }
 
