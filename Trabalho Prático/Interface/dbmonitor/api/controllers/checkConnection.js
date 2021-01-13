@@ -12,6 +12,7 @@ const oracleDbRelease = function(conn) {
 }
 
 function queryObject(sql, bindParams, options) {
+    console.log(sql);
     options['outFormat'] = oracledb.OBJECT;
 
     return new Promise(function(resolve, reject) {       
@@ -25,12 +26,15 @@ function queryObject(sql, bindParams, options) {
         .then(function(connection){
             connection.execute(sql, bindParams, options)
             .then(function(results) {
+                console.log(results)
                 resolve(results);
+                console.log(results)
                 process.nextTick(function() {
                     oracleDbRelease(connection);
                 });
             })
             .catch(function(err) {
+                console.log(err)
                 reject(err);
  
                 process.nextTick(function() {
@@ -53,6 +57,35 @@ checkConnection.getUsersTimeStamps = () => {
     return queryObject("SELECT DISTINCT TIMESTAMP FROM Users", {}, {outFormat: ""});
 }
 
+checkConnection.getTablespaces = () => {
+    
+    return queryObject("SELECT TABLESPACE_NAME,TABLESPACE_SIZE,STATUS,TIMESTAMP FROM TABLESPACES", {}, {outFormat: ""});
+}
+
+checkConnection.getTimeStamps = (table) => {
+    
+    return queryObject("SELECT DISTINCT TIMESTAMP FROM "+table, {}, {outFormat: ""});
+}
+
+checkConnection.getTablespaceData = (tName,tTS) => {
+
+    return queryObject("SELECT * FROM TABLESPACES T WHERE T.TABLESPACE_NAME='"+tName+"' AND T.TIMESTAMP=to_date('"+tTS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getLastTimestamps = (tName) => {
+
+    return queryObject("SELECT TIMESTAMP, FREE, USED FROM TABLESPACES T WHERE T.TABLESPACE_NAME='"+tName+"' ORDER BY TIMESTAMP DESC FETCH NEXT 5 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getDataFilesTablespace = (tName, tTS) => {
+
+    return queryObject("SELECT * FROM DATAFILES D WHERE D.TABLESPACE_NAME= '"+tName+"' AND D.TIMESTAMP=to_date('"+tTS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getDataFiles = () => {
+    
+    return queryObject("SELECT * FROM DATAFILES", {}, {outFormat: ""});
+}
 
 
 
