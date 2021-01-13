@@ -16,10 +16,25 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Users.vue')
   },
   {
-    path:  "/file",
-    name: 'File',
-    component: () => import(/* webpackChunkName: "about" */ '../views/File.vue')
-  }
+    path:  "/tablespaces",
+    name: 'Tablespaces',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Tablespaces.vue')
+  },
+  {
+    path:  "/tablespace/:id/:id2",
+    name: 'Tablespace',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Tablespace.vue')
+  },
+  {
+    path:  "/datafiles",
+    name: 'Datafiles',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Datafiles.vue')
+  },
+  {
+    path:  "/datafile/:id/:id2",
+    name: 'Datafile',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Datafile.vue')
+  },
 ]
 
 const router = new VueRouter({
