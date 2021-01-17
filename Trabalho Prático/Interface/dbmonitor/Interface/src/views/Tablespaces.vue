@@ -145,9 +145,7 @@ export default {
     let response = await axios.get("http://localhost:5001/tablespaces");
     var format = "DD-MM-YYYY HH:mm:ss";
     for (var j = 0; j < response.data.rows.length; j++) {
-      response.data.rows[j].TIMESTAMP = moment(
-        response.data.rows[j].TIMESTAMP
-      ).format(format);
+      response.data.rows[j].TIMESTAMP = moment(response.data.rows[j].TIMESTAMP).format(format);
     }
 
     this.items = response.data.rows;

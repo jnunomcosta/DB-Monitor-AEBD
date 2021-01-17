@@ -57,6 +57,22 @@
               </v-list-item-icon>
             </v-list-item>
           </v-list-group>
+
+        
+            <!-- THIS -->
+          <v-list-group :value="true" color="#C62828">
+             <template v-slot:activator>
+              <v-list-item-title>CPU</v-list-item-title>
+            </template>
+
+          <v-list-item link color="grey" to="/cpu/SYS">
+              <v-list-item-title>SYS</v-list-item-title>
+            </v-list-item>
+            <v-list-item link color="grey" to="/cpu/SYSTEM">
+              <v-list-item-title>SYSTEM</v-list-item-title>
+            </v-list-item>
+            </v-list-group>
+
         </v-navigation-drawer>
       </v-layout>
     </nav>
@@ -64,13 +80,30 @@
 </template>
 
 <script>
+import axios from "axios";
+ 
 export default {
   data() {
     return {
       drawer: false,
       utilizador: {},
+      item: [],
     };
   },
+  created: async function () {
+      let response = await axios.get("http://localhost:5001/getCPUUsers/");
+      this.item = response.data.rows;
+      console.log(this.item);
+  },
+  methods: {
+    toCPU:function(i){
+      const path = `/cpu/${i.USERNAME}`
+      if(this.$route.path !=path){
+      this.$router.push(
+        "/cpu/" + i.USERNAME
+      );}
+    }
+  }
 };
 </script>
 

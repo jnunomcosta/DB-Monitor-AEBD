@@ -12,6 +12,7 @@
             </v-row>
             <v-row align="center">
               <v-chip
+              v-if="item.STATUS=='ONLINE'"
                 class="ml-7 mt-4 white--text rounded-sm"
                 color="green"
                 label
@@ -19,7 +20,16 @@
               >
                 status
               </v-chip>
-              <span class="body-2 mt-4 ml-2">online</span>
+                 <v-chip
+              v-else
+                class="ml-7 mt-4 white--text rounded-sm"
+                color="orange"
+                label
+                small
+              >
+                status
+              </v-chip>
+              <span class="body-2 mt-4 ml-2">{{item.STATUS}}</span>
             </v-row>
           </v-col>
           <v-col cols="3">
@@ -148,7 +158,7 @@
 
     <v-row>
       <v-col>
-        <v-card class="mt-4 ml-16 rounded-0" height="332" width="685">
+        <v-card class="mt-4 ml-13 rounded-0" height="332" width="685">
           <stackedTimestamps
             :width="500"
             :height="300"
@@ -156,13 +166,15 @@
           ></stackedTimestamps>
         </v-card>
       </v-col>
-      <v-col>
+      <v-col class="ml-n5">
         <v-virtual-scroll :items="datafiles" max-height="348" :item-height="50">
           <template v-slot:default="{ item }">
-            <v-card class="mt-4" max-width="660" tile>
+            <v-card class="mt-4" max-width="682" tile>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="body-2">{{ item.FILENAME }} </v-list-item-title>
+                  <v-list-item-title class="body-2"
+                    >{{ item.FILENAME }}
+                  </v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-btn depressed small @click="toDataFile(item)">
@@ -178,6 +190,41 @@
         </v-virtual-scroll>
       </v-col>
     </v-row>
+    <v-row>
+      <v-card width="685" class="ml-16 mt-10 rounded-0" >
+        <v-tabs v-model="tab" background-color="#ddd4d1"
+      color="black" show-arrows >
+          <v-tabs-slider color="#837672"></v-tabs-slider>
+          <v-tab v-for="(item,index2) in timestamps" :key="index2" class="text-start">
+            {{ timestamp(item.TIMESTAMP) }}
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="(item,index1) in timestamps" :key="index1">
+            <v-card flat>
+              <v-card-text>
+                <v-list>
+                  <v-list-item v-for="(user,index) in users" :key="index">
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="user.USERNAME"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle class="text-capitalize">
+                        {{user.ACCOUNT_STATUS}}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+
+                    <v-list-item-avatar>
+                      <v-img :src="item.avatar"></v-img>
+                    </v-list-item-avatar>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card>
+    </v-row>
   </div>
 </template>
 
@@ -185,6 +232,7 @@
 import axios from "axios";
 import Navbar from "@/components/navBar.vue";
 import stackedTimestamps from "@/components/stackedTimestamps";
+import moment from "moment/moment"
 
 export default {
   name: "Tablespace",
@@ -193,26 +241,45 @@ export default {
   data() {
     return {
       item: [],
-      datafiles: []
+      datafiles: [],
+      timestamps: [],
+      users: [],
+      tab: null,
     };
   },
   created: async function () {
     let response = await axios.get(
       "http://localhost:5001/tablespacedata/" + this.id + "/" + this.id2
     );
-    console.log(response.data)
+    console.log(response.data);
     this.item = response.data.rows[0];
 
     let response2 = await axios.get(
       "http://localhost:5001/getDataFilesTablespace/" + this.id + "/" + this.id2
     );
     this.datafiles = response2.data.rows;
+
+    let response3 = await axios.post("http://localhost:5001/timestamp", {
+      table: "TABLESPACES",
+    });
+    this.timestamps = response3.data.rows;
+
+    let response4 = await axios.get(
+      "http://localhost:5001/getUsersTableSpaceTimeStamp/" +
+        this.id +
+        "/" +
+        this.id2
+    );
+    this.users = response4.data.rows;
+    console.log(response4);
   },
   methods: {
     toDataFile: function (item) {
-      this.$router.push(
-        "/datafile/" + item.FILENAME + "/" + item.TIMESTAMP
-      );
+      var nid = item.FILENAME.replace(/\//g, "!");
+      this.$router.push("/datafile/" + nid + "/" + item.TIMESTAMP);
+    },
+    timestamp: function (time) {
+      return moment(time).format("MMM DD, YYYY HH:mm:ss");
     },
   },
   components: {

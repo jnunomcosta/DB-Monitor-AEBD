@@ -35,6 +35,18 @@ const routes = [
     name: 'Datafile',
     component: () => import(/* webpackChunkName: "about" */ '../views/Datafile.vue')
   },
+  //THIS
+  {
+    path:  "/cpu/SYS",
+    name: 'cpuSYS',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CpuSYS.vue')
+  },
+
+  {
+    path:  "/cpu/SYSTEM",
+    name: 'cpuSYSTEM',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CpuSYSTEM.vue')
+  },
 ]
 
 const router = new VueRouter({

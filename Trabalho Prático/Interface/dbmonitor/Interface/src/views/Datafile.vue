@@ -5,10 +5,14 @@
 
 <script>
 import Datafile from '@/components/Datafile.vue'
+
+
 export default {
-    components: {
+    components: {   
         Datafile
-    }
+    },
+
+   
     
 }
 </script>
