@@ -12,7 +12,7 @@ const oracleDbRelease = function(conn) {
 }
 
 function queryObject(sql, bindParams, options) {
-    console.log(sql);
+    //console.log(sql);
     options['outFormat'] = oracledb.OBJECT;
 
     return new Promise(function(resolve, reject) {       
@@ -26,7 +26,7 @@ function queryObject(sql, bindParams, options) {
         .then(function(connection){
             connection.execute(sql, bindParams, options)
             .then(function(results) {
-                console.log(results)
+               // console.log(results)
                 resolve(results);
                 console.log(results)
                 process.nextTick(function() {
@@ -50,12 +50,13 @@ function queryObject(sql, bindParams, options) {
 
 checkConnection.getUsers = () => {
     return queryObject("SELECT * FROM Users", {}, {outFormat: ""});
-}
+} 
 
-checkConnection.getUsersTimeStamps = () => {
+
+checkConnection.getUsersTimeStamps = (tableS) => {
     
-    return queryObject("SELECT DISTINCT TIMESTAMP FROM Users", {}, {outFormat: ""});
-}
+    return queryObject("SELECT (DISTINCT USERNAME),TIMESTAMP FROM USERS WHERE DEFAULT_TABLESPACE='"+tableS+"'", {}, {outFormat: ""});
+}  
 
 checkConnection.getTablespaces = () => {
     
@@ -86,6 +87,37 @@ checkConnection.getDataFiles = () => {
     
     return queryObject("SELECT * FROM DATAFILES", {}, {outFormat: ""});
 }
+
+checkConnection.getDataFileTimeStamp = (fName, TS) => {
+    var nid = fName.replace(/!/g,"/");
+    return queryObject("SELECT * FROM DATAFILES D WHERE FILENAME= '"+nid+"' AND D.TIMESTAMP=to_date('"+TS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getUsersTableSpaceTimeStamp = (tableSpace, TS) => {
+
+    return queryObject("SELECT USERNAME,ACCOUNT_STATUS FROM USERS D WHERE DEFAULT_TABLESPACE= '"+tableSpace+"' AND D.TIMESTAMP=to_date('"+TS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getDataFilesBytes = (fName) => {
+    var nid = fName.replace(/!/g,"/");
+    return queryObject("SELECT TIMESTAMP, BYTES, MAXBYTES FROM DATAFILES D WHERE FILENAME= '"+nid+"' ORDER BY TIMESTAMP DESC FETCH NEXT 5 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getDataFilesBlocks = (fName) => {
+    var nid = fName.replace(/!/g,"/");
+    return queryObject("SELECT TIMESTAMP, BLOCKS, MAXBLOCKS FROM DATAFILES D WHERE FILENAME= '"+nid+"' ORDER BY TIMESTAMP DESC FETCH NEXT 5 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getCPU = (user) => {
+    return queryObject("SELECT * FROM CPU WHERE USERNAME='"+user+"'", {}, {outFormat: ""});
+}
+
+checkConnection.getCPUUsers = () => {
+    return queryObject("SELECT DISTINCT USERNAME FROM CPU ", {}, {outFormat: ""});
+}
+
+
+
 
 
 

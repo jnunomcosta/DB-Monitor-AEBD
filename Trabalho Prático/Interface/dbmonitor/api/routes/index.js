@@ -52,5 +52,51 @@ router.get('/users',(req,res,next) =>{
       .catch(erro => res.jsonp(erro))
   })
 
+  router.get('/getDataFileTimeStamp/:id/:id2',(req,res) =>{
+    connection.getDataFileTimeStamp(req.params.id, req.params.id2)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getUsersTimeStamps/:id',(req,res) =>{
+    connection.getUsersTimeStamps(req.params.id)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getUsersTableSpaceTimeStamp/:id/:id2',(req,res) =>{
+    connection.getUsersTableSpaceTimeStamp(req.params.id,req.params.id2)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getDataFilesBytes/:id/',(req,res) =>{
+    connection.getDataFilesBytes(req.params.id)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getDataFilesBlocks/:id/',(req,res) =>{
+    connection.getDataFilesBlocks(req.params.id)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getCPU/:id/',(req,res) =>{
+    connection.getCPU(req.params.id)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getCPUUsers/',(req,res) =>{
+    connection.getCPUUsers()
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  
+  
+  
+
   module.exports=router;    
   
