@@ -12,7 +12,7 @@ const oracleDbRelease = function(conn) {
 }
 
 function queryObject(sql, bindParams, options) {
-    //console.log(sql);
+    console.log(sql);
     options['outFormat'] = oracledb.OBJECT;
 
     return new Promise(function(resolve, reject) {       
@@ -109,13 +109,37 @@ checkConnection.getDataFilesBlocks = (fName) => {
 }
 
 checkConnection.getCPU = (user) => {
-    return queryObject("SELECT * FROM CPU WHERE USERNAME='"+user+"'", {}, {outFormat: ""});
+    return queryObject("SELECT * FROM CPU WHERE USERNAME='"+user+"' ORDER BY TIMESTAMP DESC FETCH NEXT 10 ROWS ONLY", {}, {outFormat: ""});
 }
 
 checkConnection.getCPUUsers = () => {
     return queryObject("SELECT DISTINCT USERNAME FROM CPU ", {}, {outFormat: ""});
 }
 
+checkConnection.getSystemGlobalArea = () => {
+    return queryObject("SELECT * FROM System_Global_Area ORDER BY TIMESTAMP DESC FETCH NEXT 10 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getProgramGlobalArea = () => {
+    return queryObject("SELECT * FROM Program_Global_Area ORDER BY TIMESTAMP DESC FETCH NEXT 10 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getSessionsUser = (user) => {
+    return queryObject("SELECT * FROM SESSIONS WHERE USERNAME='"+user+"' ORDER BY TIMESTAMP DESC FETCH NEXT 5 ROWS ONLY", {}, {outFormat: ""});
+}
+
+checkConnection.getSession = (sid,TS) => {
+    return queryObject("SELECT * FROM SESSIONS WHERE USERNAME='"+sid+"' AND TIMESTAMP=to_date('"+TS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getSessions = () => {
+    return queryObject("SELECT * FROM SESSIONS", {}, {outFormat: ""});
+}
+
+checkConnection.getTimeStampsUser = () => {
+    
+    return queryObject("SELECT USERNAME, TIMESTAMP FROM SESSIONS", {}, {outFormat: ""});
+}
 
 
 

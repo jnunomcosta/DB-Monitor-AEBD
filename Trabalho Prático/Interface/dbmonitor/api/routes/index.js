@@ -94,6 +94,49 @@ router.get('/users',(req,res,next) =>{
       .catch(erro => res.jsonp(erro))
   })
 
+  router.get('/getSystemGlobalArea/',(req,res) =>{
+    connection.getSystemGlobalArea()
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getProgramGlobalArea/',(req,res) =>{
+    connection.getProgramGlobalArea()
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+  
+  router.get('/getSessionsUser/:id',(req,res) =>{
+    connection.getSessionsUser(req.params.id)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getSession/:id/:id2',(req,res) =>{
+    connection.getSession(req.params.id,req.params.id2)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getSessions',(req,res) =>{
+    connection.getSessions()
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getTimeStampsUser',(req,res) =>{
+    connection.getTimeStampsUser()
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+  
+
+  
+
+  
+
+  
+
   
   
   
