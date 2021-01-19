@@ -1,14 +1,9 @@
 <template>
-  <div>
+  <div id="maintenance">
     <Navbar />
     <v-container fluid>
       <v-card color="white" class="mt-16">
-        <cpuChart
-          class="ml-n2"
-          :width="550"
-          :height="500"
-          id="SYSTEM"
-        ></cpuChart>
+        <SGAChart class="ml-n2" :width="550" :height="500"></SGAChart>
       </v-card>
     </v-container>
     <v-card color="transparent" flat height="100"></v-card>
@@ -17,14 +12,11 @@
 </template>
 
 <script>
-//import axios from "axios";
 import Navbar from "@/components/navBar.vue";
-//import moment from "moment/moment";
-import cpuChart from "@/components/cpuChart";
+import SGAChart from "@/components/SGAChart";
 import Footer from "@/components/Footer.vue";
 
 export default {
-  props: ["id"],
   data() {
     return {
       item: [],
@@ -33,8 +25,22 @@ export default {
 
   components: {
     Navbar,
-    cpuChart,
-    Footer
+    Footer,
+    SGAChart,
   },
 };
 </script>
+
+<style>
+#maintenance {
+  background-color: #efdcc3;
+  height: 100%;
+  background-position: center;
+  background-repeat: repeat;
+  background-size: contain;
+  position: relative;
+}
+#letra {
+  font-family: "Merienda", Helvetica, Arial;
+}
+</style>

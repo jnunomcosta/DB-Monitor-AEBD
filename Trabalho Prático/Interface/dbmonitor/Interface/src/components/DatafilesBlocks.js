@@ -59,7 +59,7 @@ export default {
                     },
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value){
+                        callback: function (value) {
                             if (value < 1e3) return value;
                             if (value >= 1e3 && value < 1e6) return +(value / 1e3).toFixed(1) + "K";
                             if (value >= 1e6 && value < 1e9) return +(value / 1e6).toFixed(1) + "M";
@@ -67,7 +67,7 @@ export default {
                             if (value >= 1e12) return +(value / 1e12).toFixed(1) + "T";
 
                         }
-                        
+
                     }
 
                 }],
@@ -98,7 +98,6 @@ export default {
         let response2 = await axios.get(
             "http://localhost:5001/getDataFilesBlocks/" + this.id
         );
-        console.log(response2);
 
         for (var i = 0; i < response2.data.rows.length; i++) {
             this.chartdata.labels.push(moment(response2.data.rows[i].TIMESTAMP).format('MMM DD, YYYY HH:mm:ss'));

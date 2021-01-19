@@ -3,12 +3,12 @@
     <Navbar />
     <v-card
       flat
-      class="mx-auto text-center mb-16 pt-16"
+      class="mx-auto text-center mb-16 mt-16 pt-16"
       height="400"
       color="transparent"
     >
       <v-row align="center" justify="center">
-        <v-col cols = "4">
+        <v-col cols="4">
           <v-row>
             <v-img
               class="mb-5 ml-16 pl-10 mt-16 pt-16"
@@ -18,7 +18,11 @@
             />
           </v-row>
           <v-row>
-            <span id="letra" class="headline font-weight-light text--darken-4 pl-11 ml-13" :style="{color: '#ec0404'}">
+            <span
+              id="letra"
+              class="headline font-weight-light text--darken-4 pl-11 ml-13"
+              :style="{ color: '#ec0404' }"
+            >
               DATABASE MONITOR
             </span>
           </v-row>

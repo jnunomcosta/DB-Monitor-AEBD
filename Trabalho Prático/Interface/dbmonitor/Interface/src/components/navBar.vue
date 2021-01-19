@@ -8,14 +8,18 @@
         </v-app-bar>
       </v-app-bar>
       <v-layout align-center justify-space-between column fill-height>
-        <v-navigation-drawer app class="white" width="200" v-model="drawer"
-      absolute
-      temporary>
+        <v-navigation-drawer
+          class="white"
+          width="220"
+          v-model="drawer"
+          temporary
+          height="100%"
+          app
+        >
           <v-list>
             <v-list-item>
               <v-list-item-icon>
-                <v-btn icon to="/">
-                <v-icon>mdi-home</v-icon></v-btn>
+                <v-btn icon to="/"> <v-icon>mdi-home</v-icon></v-btn>
               </v-list-item-icon>
 
               <v-list-item-title>DbMonitor</v-list-item-title>
@@ -35,6 +39,14 @@
               </v-list-item-icon>
             </v-list-item>
           </v-list-group>
+
+          <v-list-item link to="/sessions" color="grey">
+            <v-list-item-title>Sessions</v-list-item-title>
+
+            <v-list-item-icon>
+              <v-icon small>account_box</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
 
           <v-list-group :value="true" color="#C62828">
             <template v-slot:activator>
@@ -58,21 +70,42 @@
             </v-list-item>
           </v-list-group>
 
-        
-            <!-- THIS -->
+          <!-- THIS -->
           <v-list-group :value="true" color="#C62828">
-             <template v-slot:activator>
+            <template v-slot:activator>
               <v-list-item-title>CPU</v-list-item-title>
             </template>
 
-          <v-list-item link color="grey" to="/cpu/SYS">
+            <v-list-item link color="grey" to="/cpu/SYS">
               <v-list-item-title>SYS</v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon small>person</v-icon>
+              </v-list-item-icon>
             </v-list-item>
+
             <v-list-item link color="grey" to="/cpu/SYSTEM">
               <v-list-item-title>SYSTEM</v-list-item-title>
-            </v-list-item>
-            </v-list-group>
 
+              <v-list-item-icon>
+                <v-icon small>person</v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+
+          <v-list-item link color="grey" to="/SGA">
+            <v-list-item-title>System Global Area</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon small>public</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+
+          <v-list-item link color="grey" to="/PGA">
+            <v-list-item-title>Program Global Area</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon small>public</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-navigation-drawer>
       </v-layout>
     </nav>
@@ -81,7 +114,7 @@
 
 <script>
 import axios from "axios";
- 
+
 export default {
   data() {
     return {
@@ -91,19 +124,10 @@ export default {
     };
   },
   created: async function () {
-      let response = await axios.get("http://localhost:5001/getCPUUsers/");
-      this.item = response.data.rows;
-      console.log(this.item);
+    let response = await axios.get("http://localhost:5001/getCPUUsers/");
+    this.item = response.data.rows;
   },
-  methods: {
-    toCPU:function(i){
-      const path = `/cpu/${i.USERNAME}`
-      if(this.$route.path !=path){
-      this.$router.push(
-        "/cpu/" + i.USERNAME
-      );}
-    }
-  }
+  methods: {},
 };
 </script>
 

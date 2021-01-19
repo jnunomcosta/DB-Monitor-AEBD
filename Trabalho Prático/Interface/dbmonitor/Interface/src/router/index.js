@@ -47,6 +47,31 @@ const routes = [
     name: 'cpuSYSTEM',
     component: () => import(/* webpackChunkName: "about" */ '../views/CpuSYSTEM.vue')
   },
+
+  {
+    path:  "/SGA",
+    name: 'SGA',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Sga.vue')
+  },
+  
+  {
+    path:  "/PGA",
+    name: 'PGA',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Pga.vue')
+  },
+
+  {
+    path:  "/sessions",
+    name: 'Sessions',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Sessions.vue')
+  },
+
+  {
+    path:  "/session/:id/:id2",
+    name: 'Session',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Session.vue')
+  },
+
 ]
 
 const router = new VueRouter({

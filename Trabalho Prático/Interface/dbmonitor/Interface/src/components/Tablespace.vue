@@ -12,7 +12,7 @@
             </v-row>
             <v-row align="center">
               <v-chip
-              v-if="item.STATUS=='ONLINE'"
+                v-if="item.STATUS == 'ONLINE'"
                 class="ml-7 mt-4 white--text rounded-sm"
                 color="green"
                 label
@@ -20,8 +20,8 @@
               >
                 status
               </v-chip>
-                 <v-chip
-              v-else
+              <v-chip
+                v-else
                 class="ml-7 mt-4 white--text rounded-sm"
                 color="orange"
                 label
@@ -29,7 +29,7 @@
               >
                 status
               </v-chip>
-              <span class="body-2 mt-4 ml-2">{{item.STATUS}}</span>
+              <span class="body-2 mt-4 ml-2">{{ item.STATUS }}</span>
             </v-row>
           </v-col>
           <v-col cols="3">
@@ -167,7 +167,17 @@
         </v-card>
       </v-col>
       <v-col class="ml-n5">
-        <v-virtual-scroll :items="datafiles" max-height="348" :item-height="50">
+        <v-card v-if="datafiles.length == 0" flat class="mt-4" width="682">
+          <v-alert border="right" colored-border type="error" elevation="2">
+            No datafiles recorded!
+          </v-alert>
+        </v-card>
+        <v-virtual-scroll
+          v-else
+          :items="datafiles"
+          max-height="348"
+          :item-height="50"
+        >
           <template v-slot:default="{ item }">
             <v-card class="mt-4" max-width="682" tile>
               <v-list-item>
@@ -190,27 +200,44 @@
         </v-virtual-scroll>
       </v-col>
     </v-row>
+
+    <v-card flat color="transparent" class="ml-14 mt-5">
+      <span class="overline font-weight-bold">Utilizadores</span>
+    </v-card>
     <v-row>
-      <v-card width="685" class="ml-16 mt-10 rounded-0" >
-        <v-tabs v-model="tab" background-color="#ddd4d1"
-      color="black" show-arrows >
+      <v-card v-if="users.length == 0" flat class="ml-16 mt-5" width="685" color="transparent">
+        <v-alert border="right" colored-border type="error" elevation="2">
+          No users recorded!
+        </v-alert>
+      </v-card>
+      <v-card v-else width="685" class="ml-16 mt-5 rounded-0">
+        <v-tabs
+          v-model="tab"
+          background-color="#ddd4d1"
+          color="black"
+          show-arrows
+        >
           <v-tabs-slider color="#837672"></v-tabs-slider>
-          <v-tab v-for="(item,index2) in timestamps" :key="index2" class="text-start">
+          <v-tab
+            v-for="(item, index2) in timestamps"
+            :key="index2"
+            class="text-start"
+          >
             {{ timestamp(item.TIMESTAMP) }}
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
-          <v-tab-item v-for="(item,index1) in timestamps" :key="index1">
+          <v-tab-item v-for="(item, index1) in timestamps" :key="index1">
             <v-card flat>
               <v-card-text>
                 <v-list>
-                  <v-list-item v-for="(user,index) in users" :key="index">
+                  <v-list-item v-for="(user, index) in users" :key="index">
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="user.USERNAME"
                       ></v-list-item-title>
                       <v-list-item-subtitle class="text-capitalize">
-                        {{user.ACCOUNT_STATUS}}
+                        {{ user.ACCOUNT_STATUS }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
 
@@ -225,6 +252,8 @@
         </v-tabs-items>
       </v-card>
     </v-row>
+    <v-card color="transparent" flat height="100"></v-card>
+    <Footer />
   </div>
 </template>
 
@@ -232,7 +261,8 @@
 import axios from "axios";
 import Navbar from "@/components/navBar.vue";
 import stackedTimestamps from "@/components/stackedTimestamps";
-import moment from "moment/moment"
+import moment from "moment/moment";
+import Footer from "@/components/Footer.vue"
 
 export default {
   name: "Tablespace",
@@ -251,7 +281,6 @@ export default {
     let response = await axios.get(
       "http://localhost:5001/tablespacedata/" + this.id + "/" + this.id2
     );
-    console.log(response.data);
     this.item = response.data.rows[0];
 
     let response2 = await axios.get(
@@ -271,7 +300,6 @@ export default {
         this.id2
     );
     this.users = response4.data.rows;
-    console.log(response4);
   },
   methods: {
     toDataFile: function (item) {
@@ -285,6 +313,7 @@ export default {
   components: {
     Navbar,
     stackedTimestamps,
+    Footer
   },
 };
 </script>

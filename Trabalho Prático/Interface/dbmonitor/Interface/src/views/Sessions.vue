@@ -44,10 +44,10 @@
               :key="index"
               cols="8"
               sm="2"
-              md="3"
-              lg="6"
+              md="2"
+              lg="3"
             >
-              <v-card height="200" width="550">
+              <v-card height="200" width="300">
                 <v-list>
                   <v-list-item>
                     <v-list-item-content>
@@ -56,7 +56,7 @@
                           <div
                             class="text-center font-weight-bold black--text mt-10"
                           >
-                            {{ item.FILENAME }}
+                            {{ item.SID}} {{item.USERNAME}} 
                           </div>
                         </v-flex>
                       </v-row>
@@ -64,7 +64,7 @@
                       <v-row>
                         <v-flex xs12 text-xs-center>
                           <div class="text-center black--text mt-10">
-                            {{ item.TABLESPACE_NAME }}
+                            {{ timestamp(item.TIMESTAMP) }}
                           </div>
                         </v-flex>
                       </v-row>
@@ -75,7 +75,7 @@
                           color="green lighten-4"
                           class="black--text mt-8"
                         >
-                          {{ item.ONLINE_STATUS }}
+                          {{ item.STATUS }}
                         </v-chip>
                       </v-row>
                       <v-row justify="center">
@@ -84,7 +84,7 @@
                           color="#C62828"
                           class="mt-7"
                           small
-                          @click="toDataFile(item)"
+                          @click="toSession(item)"
                         >
                           Details
                         </v-btn>
@@ -142,11 +142,11 @@ export default {
     Footer
   },
   created: async function () {
-    let response = await axios.get("http://localhost:5001/getDataFiles");
+    let response = await axios.get("http://localhost:5001/getSessions");
     this.items = response.data.rows;
 
     let response2 = await axios.post("http://localhost:5001/timestamp", {
-      table: "DATAFILES",
+      table: "SESSIONS",
     });
 
     this.itemsTimestamp.push("- Select -");
@@ -156,9 +156,14 @@ export default {
       );
   },
   methods: {
-    toDataFile: function (item) {
-      var nid = item.FILENAME.replace(/\//g, "!");
-      this.$router.push("/datafile/" + nid + "/" + item.TIMESTAMP);
+    toSession: function (session) {
+      this.$router.push(
+        "/session/" + session.USERNAME + "/" + session.TIMESTAMP
+      );
+    },
+    timestamp: function (time) {
+      const format = "MMM DD, YYYY HH:mm:ss";
+      return moment(time).format(format);
     },
     onScroll(e) {
       if (typeof window === "undefined") return;

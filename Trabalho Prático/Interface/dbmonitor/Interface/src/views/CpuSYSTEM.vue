@@ -1,18 +1,16 @@
 <template>
-    <div id="maintenance">
-            <Cpu/>
-    </div>
+  <div id="maintenance">
+    <Cpu />
+  </div>
 </template>
 <script>
 import Cpu from "@/components/cpuSYSTEM.vue";
 
-
 export default {
-    components:{
-        Cpu,
-    },
-    
-}
+  components: {
+    Cpu,
+  },
+};
 </script>
 
 <style>
