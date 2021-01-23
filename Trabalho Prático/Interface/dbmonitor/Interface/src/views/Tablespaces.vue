@@ -7,25 +7,12 @@
         loading
         loading-text="A carregar... Por favor aguarde"
         :items="items"
-        :search="search"
-        :sort-by="sortBy.toLowerCase()"
+        :sort-by="search.toLowerCase()"
         hide-default-footer
         disable-pagination
       >
         <template v-slot:header>
           <v-toolbar dark color="#9e2020" class="mb-6">
-            <v-text-field
-              v-model="search"
-              clearable
-              flat
-              solo-inverted
-              hide-details
-              prepend-inner-icon="mdi-magnify"
-              label="Search"
-            ></v-text-field>
-
-            <v-spacer></v-spacer>
-
             <v-select
               flat
               solo-inverted
@@ -104,7 +91,7 @@
       </v-data-iterator>
     </v-container>
 
-    <v-card flat color="transparent" height="100"></v-card>
+    <v-card flat color="transparent" height="300"></v-card>
     <Footer />
 
     <v-btn
@@ -140,7 +127,6 @@ export default {
       filter: {},
       sortDesc: false,
       itemsTimestamp: [],
-      sortBy: "TABLESPACE_NAME",
     };
   },
   components: {
@@ -157,14 +143,17 @@ export default {
     }
 
     this.items = response.data.rows;
+
     let response2 = await axios.post("http://localhost:5001/timestamp", {
       table: "TABLESPACES",
     });
+
     this.itemsTimestamp.push("- Select -");
     for (var i = 0; i < response2.data.rows.length; i++)
       this.itemsTimestamp.push(
         moment(response2.data.rows[i].TIMESTAMP).format("MMM DD, YYYY HH:mm:ss")
       );
+
   },
   methods: {
     tablespace: function (item) {
@@ -184,12 +173,11 @@ export default {
   computed: {
     table_data() {
       let self = this;
+
+      const format = "DD-MM-YYYY HH:mm:ss";
       let filtered_data = this.items.filter(function (item) {
         if (self.search != "" && self.search != "- Select -") {
-          return (
-            self.search ==
-            moment(item.TIMESTAMP).format("MMM DD, YYYY HH:mm:ss")
-          );
+          return moment(self.search).format(format) == item.TIMESTAMP;
         } else {
           return item;
         }

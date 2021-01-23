@@ -73,7 +73,7 @@ export default {
 
     async mounted() {
         let response2 = await axios.get(
-            "http://localhost:5001/getSessionsUser/" + this.id
+            "http://localhost:5001/getSessionsTimestampUser/" + this.id
          );
 
         for (var i = 0; i < response2.data.rows.length; i++) {

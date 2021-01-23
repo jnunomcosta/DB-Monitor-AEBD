@@ -86,7 +86,7 @@
 
       <v-card height="100" width="225" class="mt-7 mr-7 rounded-0">
         <v-row>
-          <v-col cols="9">
+          <v-col cols="8">
             <v-row align="center">
               <span class="mt-9 ml-7 title font-weight-bold">
                 {{ item.AUTOEXTENSIBLE }}
@@ -96,7 +96,7 @@
               <span class="body-2 mt-4 ml-7">Autoextensible</span>
             </v-row>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="4">
             <v-icon class="mt-10 mr-7" color="#F9A825"> extension </v-icon>
           </v-col>
         </v-row>
@@ -144,8 +144,26 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-btn
+      v-scroll="onScroll"
+      v-show="fab"
+      icon
+      depressed
+      fixed
+      dark
+      bottom
+      right
+      class="ma-2"
+      color="#C62828"
+      @click="toTop"
+    >
+      <v-icon>keyboard_arrow_up</v-icon>
+    </v-btn>
+    <v-card color="transparent" flat height="300"></v-card>
+    
     <Footer />
+
+    
   </div>
 </template>
 <script>
@@ -162,6 +180,7 @@ export default {
   data() {
     return {
       item: [],
+      fab: false,
     };
   },
   components: {
@@ -184,6 +203,14 @@ export default {
   methods: {
     timestamp: function (time) {
       return moment(time).format("MMM DD, YYYY HH:mm:ss");
+    },
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.fab = top > 20;
+    },
+    toTop() {
+      this.$vuetify.goTo(0);
     },
   },
 };

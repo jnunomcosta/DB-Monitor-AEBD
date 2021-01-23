@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <v-container fluid>
-      <v-card color="white" class="mt-16">
+      <v-card color="white" class="mt-16 px-2">
         <cpuChart
           class="ml-n2"
           :width="550"
@@ -11,15 +11,14 @@
         ></cpuChart>
       </v-card>
     </v-container>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-card color="transparent" flat height="300"></v-card>
     <Footer />
   </div>
 </template>
 
 <script>
-//import axios from "axios";
+
 import Navbar from "@/components/navBar.vue";
-//import moment from "moment/moment";
 import cpuChart from "@/components/cpuChart";
 import Footer from "@/components/Footer.vue";
 

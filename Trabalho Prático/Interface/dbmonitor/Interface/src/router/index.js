@@ -72,16 +72,31 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Session.vue')
   },
 
+  {
+    path:  "/user/details/:id/:id2",
+    name: 'details',
+    component: () => import(/* webpackChunkName: "about" */ '../views/userDetails.vue')
+  },
+
+  {
+    path:  "/about",
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+
 ]
 
 const router = new VueRouter({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes, 
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes, 
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
+})
 
-  })
-
-  export default router
-
-
-  "/monitor/users/"
+export default router

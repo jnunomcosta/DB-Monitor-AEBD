@@ -7,25 +7,12 @@
         loading
         loading-text="A carregar... Por favor aguarde"
         :items="items"
-        :search="search"
-        :sort-by="sortBy.toLowerCase()"
+        :sort-by="search.toLowerCase()"
         hide-default-footer
         disable-pagination
       >
         <template v-slot:header>
           <v-toolbar dark color="#9e2020" class="mb-6">
-            <v-text-field
-              v-model="search"
-              clearable
-              flat
-              solo-inverted
-              hide-details
-              prepend-inner-icon="mdi-magnify"
-              label="Search"
-            ></v-text-field>
-
-            <v-spacer></v-spacer>
-
             <v-select
               flat
               solo-inverted
@@ -114,7 +101,7 @@
     >
       <v-icon>keyboard_arrow_up</v-icon>
     </v-btn>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-card color="transparent" flat height="300"></v-card>
     <Footer />
   </div>
 </template>
@@ -157,8 +144,10 @@ export default {
   },
   methods: {
     toSession: function (session) {
+      const format = "DD-MM-YYYY HH:mm:ss";
+      const date = moment(session.TIMESTAMP).format(format);
       this.$router.push(
-        "/session/" + session.USERNAME + "/" + session.TIMESTAMP
+        "/session/" + session.USERNAME + "/" + date
       );
     },
     timestamp: function (time) {

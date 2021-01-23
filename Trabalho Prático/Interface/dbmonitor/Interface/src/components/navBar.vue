@@ -10,13 +10,13 @@
       <v-layout align-center justify-space-between column fill-height>
         <v-navigation-drawer
           class="white"
-          width="220"
+          width="230"
           v-model="drawer"
           temporary
           height="100%"
           app
         >
-          <v-list>
+          <v-list subheader>
             <v-list-item>
               <v-list-item-icon>
                 <v-btn icon to="/"> <v-icon>mdi-home</v-icon></v-btn>
@@ -26,86 +26,81 @@
             </v-list-item>
           </v-list>
 
-          <v-list-group :value="true" color="#C62828">
-            <template v-slot:activator>
-              <v-list-item-title>Users</v-list-item-title>
-            </template>
+          <v-subheader>Users</v-subheader>
 
-            <v-list-item link to="/monitor/users/" color="grey">
-              <v-list-item-title>Timestamps</v-list-item-title>
-
-              <v-list-item-icon>
-                <v-icon small>schedule</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list-group>
+          <v-list-item link to="/monitor/users/" color="grey">
+            <v-list-item-icon>
+              <v-icon small>schedule</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n4">Timestamps</v-list-item-title>
+          </v-list-item>
 
           <v-list-item link to="/sessions" color="grey">
-            <v-list-item-title>Sessions</v-list-item-title>
-
             <v-list-item-icon>
               <v-icon small>account_box</v-icon>
             </v-list-item-icon>
+            <v-list-item-title class="ml-n4">Sessions</v-list-item-title>
           </v-list-item>
 
-          <v-list-group :value="true" color="#C62828">
-            <template v-slot:activator>
-              <v-list-item-title>Tablespaces</v-list-item-title>
-            </template>
+          <v-divider></v-divider>
 
-            <v-list-item link to="/tablespaces" color="grey">
-              <v-list-item-title>Tablespaces</v-list-item-title>
+          <v-subheader>Tablespaces</v-subheader>
 
-              <v-list-item-icon>
-                <v-icon small>poll</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
+          <v-list-item link to="/tablespaces" color="grey">
+            <v-list-item-icon>
+              <v-icon small>poll</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n4">Tablespaces</v-list-item-title>
+          </v-list-item>
 
-            <v-list-item link to="/datafiles" color="grey">
-              <v-list-item-title>Datafiles</v-list-item-title>
+          <v-list-item link to="/datafiles" color="grey">
+            <v-list-item-icon>
+              <v-icon small>description</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n4">Datafiles</v-list-item-title>
+          </v-list-item>
 
-              <v-list-item-icon>
-                <v-icon small>description</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list-group>
+          <v-divider></v-divider>
 
           <!-- THIS -->
-          <v-list-group :value="true" color="#C62828">
-            <template v-slot:activator>
-              <v-list-item-title>CPU</v-list-item-title>
-            </template>
+          <v-subheader>CPU</v-subheader>
 
-            <v-list-item link color="grey" to="/cpu/SYS">
-              <v-list-item-title>SYS</v-list-item-title>
+          <v-list-item link color="grey" to="/cpu/SYS">
+            <v-list-item-icon>
+              <v-icon small>person</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n4">SYS</v-list-item-title>
+          </v-list-item>
 
-              <v-list-item-icon>
-                <v-icon small>person</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
+          <v-list-item link color="grey" to="/cpu/SYSTEM">
+            <v-list-item-icon>
+              <v-icon small>person</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-n4">SYSTEM</v-list-item-title>
+          </v-list-item>
 
-            <v-list-item link color="grey" to="/cpu/SYSTEM">
-              <v-list-item-title>SYSTEM</v-list-item-title>
-
-              <v-list-item-icon>
-                <v-icon small>person</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list-group>
+          <v-divider></v-divider>
 
           <v-list-item link color="grey" to="/SGA">
-            <v-list-item-title>System Global Area</v-list-item-title>
             <v-list-item-icon>
               <v-icon small>public</v-icon>
             </v-list-item-icon>
+            <v-list-item-title class="ml-n4">System Global Area</v-list-item-title>
           </v-list-item>
 
           <v-list-item link color="grey" to="/PGA">
-            <v-list-item-title>Program Global Area</v-list-item-title>
             <v-list-item-icon>
               <v-icon small>public</v-icon>
             </v-list-item-icon>
+            <v-list-item-title class="ml-n4">Program Global Area</v-list-item-title>
           </v-list-item>
+          <template v-slot:append>
+            <div class="pa-2">
+              <v-btn text class="body-1" block @click="About()">
+                <v-icon left>info</v-icon>Sobre
+              </v-btn>
+            </div>
+          </template>
         </v-navigation-drawer>
       </v-layout>
     </nav>
@@ -113,21 +108,18 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
       drawer: false,
       utilizador: {},
-      item: [],
     };
   },
-  created: async function () {
-    let response = await axios.get("http://localhost:5001/getCPUUsers/");
-    this.item = response.data.rows;
+  methods: {
+    About: function () {
+      this.$router.push("/about");
+    },
   },
-  methods: {},
 };
 </script>
 

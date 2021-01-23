@@ -2,11 +2,11 @@
   <div id="maintenance">
     <Navbar />
     <v-container fluid>
-      <v-card color="white" class="mt-16">
+      <v-card color="white" class="mt-16 px-2">
         <PGAChart class="ml-n2" :width="550" :height="500"></PGAChart>
       </v-card>
     </v-container>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-card color="transparent" flat height="300"></v-card>
     <Footer />
   </div>
 </template>

@@ -252,7 +252,7 @@
         </v-tabs-items>
       </v-card>
     </v-row>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-card color="transparent" flat height="300"></v-card>
     <Footer />
   </div>
 </template>

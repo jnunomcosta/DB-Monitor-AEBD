@@ -121,7 +121,7 @@
         <v-row>
           <v-col cols="9">
             <v-row align="center">
-              <span class="mt-9 ml-7 title font-weight-bold">
+              <span class="mt-9 ml-7  font-weight-bold">
                 {{ item.MACHINE }}
               </span>
             </v-row>
@@ -202,8 +202,25 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-card color="transparent" flat height="100"></v-card>
+    <v-card color="transparent" flat height="300"></v-card>
     <Footer />
+
+    <v-btn
+      v-scroll="onScroll"
+      v-show="fab"
+      icon
+      depressed
+      fixed
+      dark
+      bottom
+      right
+      class="ma-2"
+      color="#C62828"
+      @click="toTop"
+    >
+      <v-icon>keyboard_arrow_up</v-icon>
+    </v-btn>
+
   </div>
 </template>
 <script>
@@ -219,6 +236,7 @@ export default {
   data() {
     return {
       item: [],
+      fab:false, 
     };
   },
   components: {
@@ -229,10 +247,8 @@ export default {
   },
 
   created: async function () {
-    var format = "DD-MM-YYYY HH:mm:ss";
-    var nid2 = moment(this.id2).format(format);
-    let response = await axios.get(
-      "http://localhost:5001/getSession/" + this.id + "/" + nid2
+   let response = await axios.get(
+      "http://localhost:5001/getSession/" + this.id + "/" + this.id2
     );
     this.item = response.data.rows[0];
   
@@ -240,6 +256,14 @@ export default {
   methods: {
     timestamp: function (time) {
       return moment(time).format("MMM DD, YYYY HH:mm:ss");
+    },
+     onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.fab = top > 20;
+    },
+    toTop() {
+      this.$vuetify.goTo(0);
     },
   },
 };
