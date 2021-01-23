@@ -124,8 +124,8 @@ checkConnection.getProgramGlobalArea = () => {
     return queryObject("SELECT * FROM Program_Global_Area ORDER BY TIMESTAMP DESC FETCH NEXT 10 ROWS ONLY", {}, {outFormat: ""});
 }
 
-checkConnection.getSessionsUser = (user) => {
-    return queryObject("SELECT * FROM SESSIONS WHERE USERNAME='"+user+"' ORDER BY TIMESTAMP DESC FETCH NEXT 5 ROWS ONLY", {}, {outFormat: ""});
+checkConnection.getSessionsTimestampUser = (user) => {
+    return queryObject("SELECT * FROM SESSIONS WHERE USERNAME='"+user+"' ORDER BY TIMESTAMP DESC FETCH NEXT 10 ROWS ONLY", {}, {outFormat: ""});
 }
 
 checkConnection.getSession = (sid,TS) => {
@@ -136,9 +136,17 @@ checkConnection.getSessions = () => {
     return queryObject("SELECT * FROM SESSIONS", {}, {outFormat: ""});
 }
 
-checkConnection.getTimeStampsUser = () => {
+checkConnection.getSessionsUser = (user) => {
     
-    return queryObject("SELECT USERNAME, TIMESTAMP FROM SESSIONS", {}, {outFormat: ""});
+    return queryObject("SELECT USERNAME, TIMESTAMP FROM SESSIONS WHERE USERNAME='"+ user +"'", {}, {outFormat: ""});
+}
+
+checkConnection.getRolesTS = (sid,TS) => {
+    return queryObject("SELECT * FROM ROLES JOIN USERS_ROLES ON ROLES.ROLE=USERS_ROLES.ROLE_NAME WHERE USErS_ROLES.USERNAME='"+sid+"' AND TIMESTAMP=to_date('"+TS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
+}
+
+checkConnection.getUserNameTS = (name,TS) => {
+    return queryObject("SELECT * FROM USERS WHERE USERS.USERNAME='"+name+"' AND TIMESTAMP=to_date('"+TS+"','DD-MM-YYYY HH24:MI:SS')", {}, {outFormat: ""});
 }
 
 

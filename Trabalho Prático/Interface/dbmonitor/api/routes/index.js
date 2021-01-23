@@ -106,8 +106,8 @@ router.get('/users',(req,res,next) =>{
       .catch(erro => res.jsonp(erro))
   })
   
-  router.get('/getSessionsUser/:id',(req,res) =>{
-    connection.getSessionsUser(req.params.id)
+  router.get('/getSessionsTimestampUser/:id',(req,res) =>{
+    connection.getSessionsTimestampUser(req.params.id)
       .then(dados => res.jsonp(dados)) 
       .catch(erro => res.jsonp(erro))
   })
@@ -124,11 +124,24 @@ router.get('/users',(req,res,next) =>{
       .catch(erro => res.jsonp(erro))
   })
 
-  router.get('/getTimeStampsUser',(req,res) =>{
-    connection.getTimeStampsUser()
+  router.get('/getSessionsUser/:id',(req,res) =>{
+    connection.getSessionsUser(req.params.id)
       .then(dados => res.jsonp(dados)) 
       .catch(erro => res.jsonp(erro))
   })
+  
+  router.get('/getRolesTS/:id/:id2',(req,res) =>{
+    connection.getRolesTS(req.params.id,req.params.id2)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+
+  router.get('/getUserNameTS/:id/:id2',(req,res) =>{
+    connection.getUserNameTS(req.params.id,req.params.id2)
+      .then(dados => res.jsonp(dados)) 
+      .catch(erro => res.jsonp(erro))
+  })
+  
   
 
   
