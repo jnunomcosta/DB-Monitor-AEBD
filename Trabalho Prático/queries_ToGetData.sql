@@ -23,8 +23,8 @@ SELECT NAME, VALUE FROM V$PGASTAT WHERE NAME='total PGA inuse' OR NAME='total PG
 /* SYSTEM_GLOBAL_AREA -> NAME | VALUE  <-  forma a parte da memória (RAM) do sistema compartilhada por todos os processos pertencentes a uma única instância do banco de dados Oracle */
 SELECT NAME, VALUE FROM V$SGA; 
 
-/* CPU -> USERNAME | USAGE */
-SELECT S.USERNAME, SUM(VALUE/100) as "CPU USAGE (SECONDS)" FROM V$SESSION S, V$SESSTAT t, V$STATNAME N 
+/* CPU -> USERNAME | USAGE <- CPU usado é a quantidade de tempo de CPU (em 10s de milissegundos) usada por uma sessão entre o início e o término de uma chamada de um utilizador. */
+SELECT S.USERNAME, SUM(VALUE/100) as "CPU USAGE (SECONDS)" FROM V$SESSION S, V$SESSTAT T, V$STATNAME N 
     WHERE T.STATISTIC# = N.STATISTIC# AND NAME LIKE '%CPU used by this session%' AND T.SID = S.SID 
         AND S.STATUS='ACTIVE' AND S.USERNAME IS NOT NULL 
     GROUP BY USERNAME, T.SID, S.SERIAL#;
