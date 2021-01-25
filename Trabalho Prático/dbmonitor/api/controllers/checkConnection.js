@@ -13,7 +13,7 @@ const oracleDbRelease = function(conn) {
 }
 
 function queryObject(sql, bindParams, options) {
-    console.log(sql);
+    //console.log(sql);
     options['outFormat'] = oracledb.OBJECT;
 
     return new Promise(function(resolve, reject) {       
@@ -26,9 +26,9 @@ function queryObject(sql, bindParams, options) {
         .then(function(connection){
             connection.execute(sql, bindParams, options)
             .then(function(results) {
-               // console.log(results)
+                // console.log(results)
                 resolve(results);
-                console.log(results)
+                // console.log(results)
                 process.nextTick(function() {
                     oracleDbRelease(connection);
                 });
