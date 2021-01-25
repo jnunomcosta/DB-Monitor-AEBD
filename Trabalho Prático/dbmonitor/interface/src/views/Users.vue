@@ -160,6 +160,7 @@ export default {
       this.itemsTimestamp.push(
         moment(response2.data.rows[i].TIMESTAMP).format(format)
       );
+    this.itemsTimestamp.sort().reverse()
 
      
   },

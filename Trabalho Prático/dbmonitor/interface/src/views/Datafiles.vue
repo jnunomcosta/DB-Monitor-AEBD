@@ -141,6 +141,7 @@ export default {
       this.itemsTimestamp.push(
         moment(response2.data.rows[i].TIMESTAMP).format("MMM DD, YYYY HH:mm:ss")
       );
+    this.itemsTimestamp.sort().reverse()
   },
   methods: {
     toDataFile: function (item) {
