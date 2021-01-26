@@ -10,5 +10,5 @@ docker-compose up -d
 ```
   IDE -> Start Main.java 
 ```
-3. Colocar a correr a API : `Efectua a conexão à base de dados e devolver respostas em JSON`
+3. Colocar a correr a API : `Efectua a conexão à base de dados e devolve respostas em JSON`
 4. Colocar a correr a Interface : `Efectua pedidos à API através de uma interface`
