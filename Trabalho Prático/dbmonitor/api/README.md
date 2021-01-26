@@ -1,11 +1,11 @@
 # API
 
-## Project setup
+## Install dependencies
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Project setup
 ```
 npm start
 ```
