@@ -1,11 +1,16 @@
 # dbmonitor
 
-## Project setup
+## Modo de execução:
+1. Iniciar o oracledb 
 ```
-Run api
+cd /home/uminho/dockers/data/oracle
+docker-compose up -d
 ```
-
-### Compiles and hot-reloads for development
+2. Colocar a correr o Agente (Opcional)
 ```
-Run interface
+  IDE -> Start Main.java 
 ```
+3. Colocar a correr a API 
+  `Efectua a conexão à base de dados e devolver respostas em JSON`
+4. Colocar a correr a Interface  
+  `Efectua pedidos à API através de uma interface`
